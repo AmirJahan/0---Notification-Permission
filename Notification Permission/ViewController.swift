@@ -1,25 +1,49 @@
-//
-//  ViewController.swift
-//  Notification Permission
-//
-//  Created by Amir on 11/5/17.
-//  Copyright © 2017 Cinard Digital Media Institute. All rights reserved.
-//
 
 import UIKit
+import UserNotifications
 
 class ViewController: UIViewController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        
+        getUserPermission();
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    
+    // how to re-authorize
+    
+    func getUserPermission()
+    {
+        // grant access by user to receve notifications
+        UNUserNotificationCenter
+            .current()
+            .requestAuthorization(options: [.alert, .sound])
+            {
+                (accepted, error) in
+                var alert : UIAlertController;
+                
+                
+                if !accepted
+                {
+                    alert = UIAlertController(title: "Denied",
+                                              message: "Notification access denied.",
+                                              preferredStyle: UIAlertControllerStyle.alert);
+                }
+                else
+                {
+                    alert = UIAlertController(title: "Granted",
+                                              message: "Notification access granted.",
+                                              preferredStyle: UIAlertControllerStyle.alert);
+                }
+                alert.addAction(UIAlertAction(title: "Ok",
+                                              style: UIAlertActionStyle.default,
+                                              handler: nil))
+                
+                self.present(alert, animated: true, completion: nil)
+        }
     }
-
-
+    
 }
 
